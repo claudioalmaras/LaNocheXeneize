@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Noche Xeneize - Una Noche Azul y Oro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Oswald (Fuerza Xeneize) y Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos festivos y redes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        xeneizeBlue: '#030C22',
+                        xeneizeBlueDark: '#010511',
+                        xeneizeGold: '#FFC72C',
+                        xeneizeGoldDark: '#FBA919',
+                    },
+                    fontFamily: {
+                        oswald: ['Oswald', 'sans-serif'],
+                        jakarta: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .neon-glow {
+            text-shadow: 0 0 15px rgba(255, 199, 44, 0.7), 0 0 30px rgba(255, 199, 44, 0.4);
+        }
+        .blue-glow {
+            box-shadow: 0 0 40px rgba(3, 12, 34, 0.9), inset 0 0 20px rgba(255, 199, 44, 0.2);
+        }
+        .gold-border-glow:hover {
+            box-shadow: 0 0 25px rgba(255, 199, 44, 0.6);
+            border-color: #FFC72C;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #010511;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFC72C;
+            border-radius: 4px;
+        }
+        /* Transición para las secciones */
+        .carrd-section {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .carrd-section.hidden-section {
+            display: none !important;
+            opacity: 0;
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 font-jakarta text-white min-h-screen overflow-x-hidden relative flex flex-col items-center">
+
+    <!-- Lienzo de Canvas para Efectos Festivos (Papelitos, Destellos y Reflectores de Boliche) -->
+    <canvas id="confettiCanvas" class="fixed inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- CONTENEDOR PRINCIPAL ESTILO CARRD -->
+    <div class="w-full max-w-4xl min-h-screen relative z-10 px-4 py-8 md:py-12 flex flex-col justify-between">
+
+        <!-- BARRA DE NAVEGACIÓN -->
+        <nav class="w-full max-w-2xl mx-auto mb-10 bg-slate-950/80 border border-slate-800 rounded-full px-2 py-1.5 flex justify-between items-center backdrop-blur-md shadow-lg overflow-x-auto whitespace-nowrap">
+            <button onclick="switchTab('inicio')" id="nav-inicio" class="nav-btn bg-xeneizeGold text-xeneizeBlue font-bold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200">
+                <i class="fa-solid fa-house mr-1"></i> Inicio
+            </button>
+            <button onclick="switchTab('preventa')" id="nav-preventa" class="nav-btn text-slate-300 hover:text-xeneizeGold font-semibold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200">
+                <i class="fa-solid fa-tag mr-1"></i> Pre-Venta
+            </button>
+            <button onclick="switchTab('cena-show')" id="nav-cena-show" class="nav-btn text-slate-300 hover:text-xeneizeGold font-semibold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200">
+                <i class="fa-solid fa-utensils mr-1"></i> Cena Show
+            </button>
+            <button onclick="switchTab('vip')" id="nav-vip" class="nav-btn text-slate-300 hover:text-xeneizeGold font-semibold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200">
+                <i class="fa-solid fa-crown mr-1"></i> V.I.P
+            </button>
+            <button onclick="switchTab('redes')" id="nav-redes" class="nav-btn text-slate-300 hover:text-xeneizeGold font-semibold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200">
+                <i class="fa-solid fa-comments mr-1"></i> Redes
+            </button>
+        </nav>
+
+        <!-- SECCIÓN: INICIO (PÁGINA PRINCIPAL) -->
+        <div id="section-inicio" class="carrd-section space-y-12 w-full">
+            <!-- PRESENTACIÓN IMPACTANTE -->
+            <header class="text-center relative z-20 pt-4">
+                
+                <!-- Contenedor del Logo de La Noche Xeneize -->
+                <div class="w-64 h-64 mx-auto mb-8 flex items-center justify-center relative group">
+                    <div class="absolute inset-0 bg-xeneizeGold/15 rounded-full blur-2xl group-hover:bg-xeneizeGold/25 transition duration-300"></div>
+                    <!-- Carga el logo oficial brindado -->
+                    <img id="logoPreview" src="LOGO PARA INSTAGRAM.jpg" 
+                         onerror="this.src='https://placehold.co/400x400/030C22/FFC72C?text=LA+NOCHE+XENEIZE'" 
+                         alt="Logo La Noche Xeneize" 
+                         class="w-full h-full object-contain rounded-2xl relative z-10 border-2 border-xeneizeGold/30 p-2 bg-xeneizeBlue shadow-2xl transition duration-300 group-hover:scale-105">
+                </div>
+                
+                <p class="text-xeneizeGold font-bold tracking-widest text-sm uppercase md:text-base neon-glow">★ UNA NOCHE AZUL Y ORO ★</p>
+                
+                <!-- Título Hero imponente -->
+                <h1 class="font-oswald text-5xl md:text-7xl font-extrabold tracking-tight text-white mt-3 leading-none uppercase">
+                    Vuelve el Sentimiento <br><span class="text-xeneizeGold neon-glow">MÁS GRANDE DEL PAÍS</span>
+                </h1>
+                <p class="text-slate-300 max-w-xl mx-auto mt-5 text-base md:text-lg leading-relaxed font-semibold">
+                    La Bombonera se traslada a una noche única diseñada para <strong class="text-xeneizeGold">todos los hinchas xeneizes</strong> sin excepción. ¡Abierto a todo el público que siente esta pasión!
+                </p>
+
+                <!-- Accesos directos a secciones clave -->
+                <div class="flex flex-wrap justify-center gap-3 mt-8">
+                    <button onclick="switchTab('preventa')" class="bg-gradient-to-r from-xeneizeGold to-xeneizeGoldDark text-xeneizeBlue font-bold text-xs px-5 py-3 rounded-xl uppercase tracking-wider shadow-lg hover:scale-105 transition duration-200">
+                        Pre-Venta de Entradas
+                    </button>
+                    <button onclick="switchTab('cena-show')" class="bg-[#05102F] border border-xeneizeGold/40 text-xeneizeGold font-bold text-xs px-5 py-3 rounded-xl uppercase tracking-wider hover:bg-[#030C22] transition duration-200">
+                        Conocer Cena Show
+                    </button>
+                </div>
+            </header>
+
+            <!-- CONTADOR REGRESIVO INTERACTIVO (15 DE AGOSTO) -->
+            <section class="max-w-xl mx-auto bg-black/65 border-2 border-xeneizeGold/30 rounded-3xl p-6 text-center shadow-2xl relative overflow-hidden backdrop-blur-md z-20">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-xeneizeGold via-blue-600 to-xeneizeGold"></div>
+                <h3 class="font-oswald text-2xl font-bold text-xeneizeGold tracking-widest mb-4 uppercase">FALTAN MUY POCOS DÍAS</h3>
+                
+                <div class="grid grid-cols-4 gap-2 md:gap-4">
+                    <div class="bg-xeneizeBlue/90 p-3 rounded-xl border border-xeneizeGold/25 shadow-inner">
+                        <span id="days" class="font-oswald text-3xl md:text-5xl font-bold text-white block">00</span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Días</span>
+                    </div>
+                    <div class="bg-xeneizeBlue/90 p-3 rounded-xl border border-xeneizeGold/25 shadow-inner">
+                        <span id="hours" class="font-oswald text-3xl md:text-5xl font-bold text-white block">00</span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Horas</span>
+                    </div>
+                    <div class="bg-xeneizeBlue/90 p-3 rounded-xl border border-xeneizeGold/25 shadow-inner">
+                        <span id="minutes" class="font-oswald text-3xl md:text-5xl font-bold text-white block">00</span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Mins</span>
+                    </div>
+                    <div class="bg-xeneizeBlue/90 p-3 rounded-xl border border-xeneizeGold/25 shadow-inner">
+                        <span id="seconds" class="font-oswald text-3xl md:text-5xl font-bold text-xeneizeGold block">00</span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Segs</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex items-center justify-center gap-3 text-sm text-slate-300 bg-[#05102F]/50 py-2 px-4 rounded-xl border border-blue-900/40 w-fit mx-auto">
+                    <i class="fa-solid fa-calendar text-xeneizeGold animate-pulse"></i>
+                    <span class="font-bold">15 de Agosto de 2026</span>
+                    <span class="text-xeneizeGold">|</span>
+                    <i class="fa-solid fa-clock text-xeneizeGold"></i>
+                    <span class="font-bold">21:00 HS</span>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: UBICACIÓN OFICIAL (Espacio Brown) -->
+            <section class="max-w-xl mx-auto bg-slate-950/80 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl relative z-20 backdrop-blur-md">
+                <div class="flex flex-col sm:flex-row items-center gap-6">
+                    <!-- Logo oficial de Espacio Brown -->
+                    <div class="w-24 h-24 shrink-0 bg-white rounded-2xl border border-slate-200 p-1 flex items-center justify-center shadow-lg">
+                        <img id="venueLogoPreview" src="LOGO ESPACIO BR 2.png" 
+                             onerror="this.src='https://placehold.co/200x200/030C22/FFC72C?text=Espacio+Brown'" 
+                             alt="Logo de Espacio Brown" 
+                             class="max-w-full max-h-full object-contain rounded-xl">
+                    </div>
+                    <!-- Información de Ubicación -->
+                    <div class="text-center sm:text-left space-y-2">
+                        <span class="text-xeneizeGold font-bold text-xs uppercase tracking-widest block"><i class="fa-solid fa-map-pin mr-1"></i> Ubicación del Evento</span>
+                        <h3 class="font-oswald text-2xl font-bold text-white uppercase leading-tight">Espacio Brown</h3>
+                        <p class="text-slate-400 text-xs font-semibold leading-relaxed">Almirante Brown 700, Quilmes Centro</p>
+                        <span class="inline-flex items-center gap-1.5 text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold uppercase mt-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> Salón Confirmado
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Botón para ver en Google Maps -->
+                <div class="mt-6 pt-4 border-t border-slate-900 flex justify-end">
+                    <a href="https://maps.google.com/?q=Almirante+Brown+700,+Quilmes" target="_blank" class="text-xeneizeGold hover:text-white text-xs font-bold flex items-center gap-1 transition">
+                        Cómo llegar con Google Maps <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- SECCIÓN: CÓDIGO DE VESTIMENTA (DRESS CODE) -->
+            <section class="max-w-xl mx-auto bg-slate-950/80 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl relative z-20 backdrop-blur-md text-center">
+                <span class="text-xeneizeGold font-bold text-xs uppercase tracking-widest block mb-2"><i class="fa-solid fa-shirt mr-1"></i> Código de Vestimenta</span>
+                <h3 class="font-oswald text-2xl font-bold text-white uppercase leading-tight">Ropa de Boca o Neutral</h3>
+                <p class="text-slate-400 text-xs font-semibold leading-relaxed mt-2 max-w-sm mx-auto">
+                    Para mantener la mística de la fiesta, te invitamos a asistir con <strong class="text-xeneizeGold">ropa de Boca Juniors (azul y amarillo)</strong> o prendas de <strong class="text-white">colores neutros</strong>.
+                </p>
+                <div class="mt-4 flex justify-center gap-2">
+                    <span class="w-5 h-5 rounded-full bg-blue-600 border border-xeneizeGold/30 shadow-md"></span>
+                    <span class="w-5 h-5 rounded-full bg-xeneizeGold shadow-md"></span>
+                    <span class="w-5 h-5 rounded-full bg-neutral-600 shadow-md"></span>
+                </div>
+            </section>
+        </div>
+
+        <!-- SECCIÓN: PRE-VENTA -->
+        <div id="section-preventa" class="carrd-section hidden-section space-y-8 relative z-20 w-full max-w-2xl mx-auto">
+            <div class="text-center">
+                <span class="text-xeneizeGold font-bold text-xs tracking-widest uppercase bg-xeneizeGold/10 px-3 py-1 rounded-full border border-xeneizeGold/20">Acceso Anticipado</span>
+                <h2 class="font-oswald text-4xl md:text-5xl font-extrabold text-white uppercase mt-2">PRE-VENTA EXCLUSIVA</h2>
+                <p class="text-slate-300 text-sm mt-2 max-w-md mx-auto">Asegurá tu ingreso hoy mismo a un precio sumamente reducido antes del cambio de lote tarifario. ¡No te quedes afuera!</p>
+            </div>
+
+            <!-- Tarjeta de Beneficios de la Pre-venta -->
+            <div class="bg-gradient-to-br from-[#040d28]/90 to-slate-950/95 border border-xeneizeGold/30 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+                <div class="flex items-center gap-4 border-b border-slate-800/80 pb-4">
+                    <div class="w-12 h-12 rounded-full bg-xeneizeGold/10 flex items-center justify-center text-xeneizeGold text-xl">
+                        <i class="fa-solid fa-ticket-simple"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-base md:text-lg uppercase">¡APROVECHÁ EL VALOR DE PRE-VENTA!</h3>
+                        <p class="text-xs text-slate-400">Cupos limitados hasta agotar stock asignado</p>
+                    </div>
+                </div>
+
+                <ul class="space-y-3 text-xs md:text-sm text-slate-300">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-xeneizeGold mt-1"></i>
+                        <span><strong>Abierto a todos:</strong> Evento general para todos los hinchas, socios y simpatizantes.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-xeneizeGold mt-1"></i>
+                        <span><strong>Grandes Sorteos:</strong> Participación automática en espectaculares sorteos en vivo que realizaremos durante el transcurso de la noche.</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-circle-check text-xeneizeGold mt-1"></i>
+                        <span><strong>Ingreso Garantizado:</strong> Acceso rápido al recinto evitando demoras innecesarias de acreditación en puerta.</span>
+                    </li>
+                </ul>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                    <!-- Precio Pre-Venta -->
+                    <div class="bg-[#05102F]/60 p-4 rounded-2xl border border-xeneizeGold/20 flex flex-col justify-center">
+                        <span class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">VALOR ONLINE PRE-VENTA</span>
+                        <span class="font-oswald text-3xl font-extrabold text-xeneizeGold">$11.000 <span class="text-xs text-white">ARS</span></span>
+                        <span class="text-[10px] text-emerald-400 font-semibold mt-1">Disponible para compra online</span>
+                    </div>
+                    <!-- Precio En Puerta -->
+                    <div class="bg-black/50 p-4 rounded-2xl border border-slate-800 flex flex-col justify-center">
+                        <span class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">VALOR EN PUERTA</span>
+                        <span class="font-oswald text-3xl font-extrabold text-slate-400">$16.500 <span class="text-xs text-slate-500">ARS</span></span>
+                        <span class="text-[10px] text-xeneizeGold font-semibold mt-1">¡Ahorrás $5.500 comprando ahora!</span>
+                    </div>
+                </div>
+
+                <!-- Botón de compra dinámica -->
+                <button onclick="redirigirCompra()" class="w-full bg-gradient-to-r from-xeneizeGold to-xeneizeGoldDark text-xeneizeBlue font-extrabold text-sm py-4 rounded-xl uppercase tracking-wider shadow-lg hover:scale-[1.02] active:scale-[0.98] transition duration-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i> Adquirir Entrada ($11.000)
+                </button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CENA SHOW -->
+        <div id="section-cena-show" class="carrd-section hidden-section space-y-8 relative z-20 w-full max-w-2xl mx-auto">
+            <div class="text-center">
+                <span class="text-xeneizeGold font-bold text-xs tracking-widest uppercase bg-xeneizeGold/10 px-3 py-1 rounded-full border border-xeneizeGold/20">La Gran Previa</span>
+                <h2 class="font-oswald text-4xl md:text-5xl font-extrabold text-white uppercase mt-2">CENA SHOW</h2>
+                <p class="text-slate-300 text-sm mt-2 max-w-md mx-auto">Comenzá la noche cantando las mejores canciones, disfrutando de un show increíble y pizza libre antes de la gran fiesta.</p>
+            </div>
+
+            <!-- Detalle Cena Show -->
+            <div class="bg-gradient-to-br from-[#040d28]/90 to-slate-950/95 border border-xeneizeGold/30 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Bloque Información Clave -->
+                    <div class="space-y-4">
+                        <h3 class="font-oswald text-2xl font-bold text-xeneizeGold uppercase">¿Qué Incluye el Pase?</h3>
+                        
+                        <ul class="space-y-3 text-xs md:text-sm text-slate-300">
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-pizza-slice text-xeneizeGold text-base"></i>
+                                <span><strong>Pizza Libre:</strong> Comé todo lo que quieras antes de la fiesta.</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-microphone-lines text-xeneizeGold text-base"></i>
+                                <span><strong>Show de Previa:</strong> Show musical en vivo para calentar motores.</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-ticket-simple text-xeneizeGold text-base"></i>
+                                <span><strong>Ingreso a la Fiesta:</strong> El pase incluye tu entrada a La Noche Xeneize posterior.</span>
+                            </li>
+                            <li class="flex items-center gap-3">
+                                <i class="fa-solid fa-clover text-xeneizeGold text-base"></i>
+                                <span><strong>Sorteos en Vivo:</strong> Participás de todos los sorteos de la noche.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Bloque de Horarios -->
+                    <div class="bg-black/60 p-5 rounded-2xl border border-xeneizeGold/20 flex flex-col justify-center text-center">
+                        <span class="text-xeneizeGold text-4xl mb-3"><i class="fa-solid fa-utensils"></i></span>
+                        <span class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Horario de Ingreso</span>
+                        <h4 class="font-bold text-white text-base mt-1">A PARTIR DE LAS 21:00 HS</h4>
+                        <p class="text-xs text-slate-400 mt-1">Llegá temprano para aprovechar al máximo el show de previa y la pizza libre.</p>
+                    </div>
+                </div>
+
+                <!-- Precios de la Cena Show -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t border-slate-800/80 pt-6">
+                    <!-- Precio Online -->
+                    <div class="bg-[#05102F]/60 p-4 rounded-2xl border border-xeneizeGold/20 flex flex-col justify-center">
+                        <span class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">VALOR ONLINE PRE-VENTA</span>
+                        <span class="font-oswald text-3xl font-extrabold text-xeneizeGold">$15.000 <span class="text-xs text-white">ARS</span></span>
+                        <span class="text-[10px] text-emerald-400 font-semibold mt-1">Incluye entrada general posterior y sorteos</span>
+                    </div>
+                    <!-- Precio En Puerta -->
+                    <div class="bg-black/50 p-4 rounded-2xl border border-slate-800 flex flex-col justify-center">
+                        <span class="text-[9px] text-slate-400 uppercase tracking-widest font-bold">VALOR EN PUERTA</span>
+                        <span class="font-oswald text-3xl font-extrabold text-slate-400">$20.000 <span class="text-xs text-slate-500">ARS</span></span>
+                        <span class="text-[10px] text-xeneizeGold font-semibold mt-1">¡Ahorrás $5.000 comprando online!</span>
+                    </div>
+                </div>
+
+                <!-- Botón de compra dinámica -->
+                <button onclick="redirigirCompra()" class="w-full bg-gradient-to-r from-xeneizeGold to-xeneizeGoldDark text-xeneizeBlue font-extrabold text-sm py-4 rounded-xl uppercase tracking-wider shadow-lg hover:scale-[1.02] active:scale-[0.98] transition duration-200 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-shopping"></i> Adquirir Pase Cena Show ($15.000)
+                </button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: V.I.P -->
+        <div id="section-vip" class="carrd-section hidden-section space-y-8 relative z-20 w-full max-w-2xl mx-auto">
+            <div class="text-center">
+                <span class="text-xeneizeGold font-bold text-xs tracking-widest uppercase bg-xeneizeGold/10 px-3 py-1 rounded-full border border-xeneizeGold/20">La Mística de Elite</span>
+                <h2 class="font-oswald text-4xl md:text-5xl font-extrabold text-white uppercase mt-2">ACCESO EXCLUSIVO V.I.P</h2>
+                <p class="text-slate-300 text-sm mt-2 max-w-md mx-auto">Vivir la pasión de La Noche Xeneize con los máximos niveles de confort, ubicación privilegiada y beneficios de primer nivel.</p>
+            </div>
+
+            <!-- Tarjeta VIP Estilo Credencial Dorada Mejorada -->
+            <div class="bg-[#030C22]/85 border-2 border-xeneizeGold rounded-3xl p-6 md:p-8 relative overflow-hidden shadow-2xl backdrop-blur-md">
+                <div class="absolute -right-8 -top-8 w-32 h-32 bg-xeneizeGold/5 rounded-full blur-2xl"></div>
+                
+                <div class="flex justify-between items-start mb-6 border-b border-xeneizeGold/20 pb-4">
+                    <div>
+                        <span class="bg-xeneizeGold text-xeneizeBlue font-extrabold text-[10px] px-3 py-1 rounded-full uppercase tracking-wider">Mesa de Oro (8 Personas)</span>
+                        <h3 class="font-oswald text-3xl font-bold text-white uppercase mt-2">La Noche Xeneize V.I.P.</h3>
+                    </div>
+                    <span class="text-xeneizeGold text-3xl animate-bounce"><i class="fa-solid fa-crown"></i></span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300">
+                    <div class="flex gap-3">
+                        <span class="text-xeneizeGold text-base"><i class="fa-solid fa-glass-water"></i></span>
+                        <div>
+                            <span class="font-bold text-white block uppercase">Consumición en Barra Incluida</span>
+                            <p class="text-[11px] text-slate-400">Incluye un impresionante saldo de <strong class="text-xeneizeGold">$160.000 ARS</strong> para canjear por bebidas y tragos en barra VIP.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="text-xeneizeGold text-base"><i class="fa-solid fa-users"></i></span>
+                        <div>
+                            <span class="font-bold text-white block uppercase">Capacidad para 8 Personas</span>
+                            <p class="text-[11px] text-slate-400">Acceso exclusivo al sector VIP para vos y 7 acompañantes más.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="text-xeneizeGold text-base"><i class="fa-solid fa-arrows-to-eye"></i></span>
+                        <div>
+                            <span class="font-bold text-white block uppercase">Ubicación de primera</span>
+                            <p class="text-[11px] text-slate-400">Ubicación de primera con vista preferencial de la pista central y show de percusión en vivo.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <span class="text-xeneizeGold text-base"><i class="fa-solid fa-door-open"></i></span>
+                        <div>
+                            <span class="font-bold text-white block uppercase">Fast-Pass de Ingreso</span>
+                            <p class="text-[11px] text-slate-400">Puerta dedicada para que tu grupo ingrese al instante sin hacer filas generales.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 border-t border-xeneizeGold/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div>
+                        <span class="text-[9px] text-slate-400 uppercase tracking-widest block font-bold">VALOR MESA VIP (8 pases + $160.000 barra)</span>
+                        <span class="font-oswald text-4xl font-extrabold text-xeneizeGold">$250.000 <span class="text-xs text-white">ARS</span></span>
+                    </div>
+                    <button onclick="redirigirCompra()" class="w-full sm:w-auto bg-gradient-to-r from-xeneizeGold to-xeneizeGoldDark text-xeneizeBlue font-extrabold text-xs px-6 py-4 rounded-xl uppercase tracking-wider hover:scale-105 transition duration-200">
+                        Comprar Mesa VIP ($250.000)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: NUESTRAS REDES / CONTACTO -->
+        <div id="section-redes" class="carrd-section hidden-section space-y-8 relative z-20 w-full max-w-2xl mx-auto">
+            <div class="text-center">
+                <span class="text-xeneizeGold font-bold text-xs tracking-widest uppercase bg-xeneizeGold/10 px-3 py-1 rounded-full border border-xeneizeGold/20">Comunidad Azul y Oro</span>
+                <h2 class="font-oswald text-4xl md:text-5xl font-extrabold text-white uppercase mt-2">SEGUINOS Y CONTACTANOS</h2>
+                <p class="text-slate-300 text-sm mt-2 max-w-md mx-auto">No te pierdas de los anuncios sorpresas, sorteos previos y resolución de dudas.</p>
+            </div>
+
+            <!-- Redes Sociales Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <!-- Instagram -->
+                <a href="https://instagram.com/lanochexeneize" target="_blank" class="bg-gradient-to-br from-[#0c0f1c] to-black border border-slate-800 hover:border-pink-500 rounded-2xl p-5 text-center transition duration-200 group">
+                    <span class="text-pink-500 text-3xl block mb-2 group-hover:scale-110 transition"><i class="fa-brands fa-instagram"></i></span>
+                    <span class="font-bold text-white block text-sm">Instagram</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">@lanochexeneize</span>
+                </a>
+
+                <!-- TikTok -->
+                <a href="https://tiktok.com/@lanochexeneize" target="_blank" class="bg-gradient-to-br from-[#0c0f1c] to-black border border-slate-800 hover:border-cyan-400 rounded-2xl p-5 text-center transition duration-200 group">
+                    <span class="text-cyan-400 text-3xl block mb-2 group-hover:scale-110 transition"><i class="fa-brands fa-tiktok"></i></span>
+                    <span class="font-bold text-white block text-sm">TikTok</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">@lanochexeneize</span>
+                </a>
+
+                <!-- Facebook -->
+                <a href="https://facebook.com" target="_blank" class="bg-gradient-to-br from-[#0c0f1c] to-black border border-slate-800 hover:border-blue-600 rounded-2xl p-5 text-center transition duration-200 group">
+                    <span class="text-blue-600 text-3xl block mb-2 group-hover:scale-110 transition"><i class="fa-brands fa-facebook"></i></span>
+                    <span class="font-bold text-white block text-sm">Facebook</span>
+                    <span class="text-[11px] text-slate-500 mt-1 block">la noche xeneize</span>
+                </a>
+            </div>
+
+            <!-- Sección WhatsApp Oficial -->
+            <div class="bg-emerald-950/20 border-2 border-emerald-500/20 hover:border-emerald-500/40 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6 transition duration-300">
+                <div class="flex items-start gap-4">
+                    <span class="text-emerald-400 text-4xl mt-1"><i class="fa-brands fa-whatsapp"></i></span>
+                    <div>
+                        <h3 class="font-bold text-white text-base md:text-lg uppercase">¿Tenés dudas o consultas?</h3>
+                        <p class="text-xs text-slate-300 mt-1">Escribinos directamente por WhatsApp por cualquier consulta relacionada al evento, compra de entradas o reservas grupales VIP.</p>
+                        <span class="text-[11px] text-emerald-400 font-bold block mt-2">+54 9 11 6693-7534</span>
+                    </div>
+                </div>
+                <a href="https://wa.me/5491166937534?text=Hola!%20Tengo%20una%20consulta%20sobre%20La%20Noche%20Xeneize..." target="_blank" class="w-full md:w-auto bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs px-6 py-4 rounded-xl uppercase tracking-wider text-center whitespace-nowrap transition duration-200">
+                    Chat de WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- FOOTER FIESTA -->
+        <footer class="text-center mt-16 py-6 border-t border-xeneizeGold/15 text-xs text-slate-500 relative z-20 w-full">
+            <div class="flex justify-center gap-6 mb-4">
+                <a href="https://instagram.com/lanochexeneize" target="_blank" class="text-slate-400 hover:text-xeneizeGold text-xl"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://tiktok.com/@lanochexeneize" target="_blank" class="text-slate-400 hover:text-xeneizeGold text-xl"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+            <p>© 2026 La Noche Xeneize • Una verdadera fiesta para todos los hinchas</p>
+            <p class="mt-1 text-[10px]">Sitio no oficial. Sin afiliación directa al Club Atlético Boca Juniors.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- 1. Lógica de Navegación del Simulador de Secciones ---
+        function switchTab(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.carrd-section');
+            sections.forEach(sec => {
+                sec.classList.add('hidden-section');
+            });
+
+            // Mostrar la sección seleccionada
+            const targetSection = document.getElementById(`section-${sectionId}`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden-section');
+            }
+
+            // Cambiar estilos de botones de navegación
+            const navButtons = document.querySelectorAll('.nav-btn');
+            navButtons.forEach(btn => {
+                btn.className = "nav-btn text-slate-300 hover:text-xeneizeGold font-semibold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200";
+            });
+
+            const activeBtn = document.getElementById(`nav-${sectionId}`);
+            if (activeBtn) {
+                activeBtn.className = "nav-btn bg-xeneizeGold text-xeneizeBlue font-bold text-xs md:text-sm px-4 py-2 rounded-full transition-all duration-200 shadow-md shadow-xeneizeGold/30";
+            }
+        }
+
+        // --- 2. Lógica de redirección directa de compra (eTickets) ---
+        function redirigirCompra() {
+            window.open('https://etickets.com.ar/la-noche-xeneize-vol-2/', '_blank');
+        }
+
+        // --- 3. Efectos Visuales Avanzados: Papelitos & Luces de Fiesta ---
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let confetti = [];
+        let spotlights = [];
+        let sparkles = [];
+
+        const colors = [
+            '#0284c7', // Azul Boca Claro
+            '#0a4fb8', // Azul Boca Tradicional
+            '#FFC72C', // Oro Boca
+            '#fba919'  // Naranja Oro
+        ];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Clase para los Papelitos (Confeti de Tribuna)
+        class ConfettiPiece {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height; // Inicializar distribuidos
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -200 - 20;
+                this.size = Math.random() * 8 + 6;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 4 - 2;
+                this.speedY = Math.random() * 2 + 1.5;
+                this.speedX = Math.random() * 1.5 - 0.75;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                
+                if (this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x + this.size / 2, this.y + this.size / 2);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.fillStyle = this.color;
+                ctx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+                ctx.restore();
+            }
+        }
+
+        // Clase para las Luces de Destello Flotantes (Sparkles de fiesta)
+        class SparklePiece {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height + Math.random() * 100;
+                this.size = Math.random() * 4 + 2;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.alpha = Math.random() * 0.5 + 0.3;
+                this.speedY = -(Math.random() * 1 + 0.5);
+                this.speedX = Math.random() * 1 - 0.5;
+                this.fadeSpeed = Math.random() * 0.005 + 0.002;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.alpha -= this.fadeSpeed;
+                if (this.alpha <= 0 || this.y < 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Clase para Reflectores/Boliche (Spotlights)
+        class Spotlight {
+            constructor(x, color, angleStart, speed) {
+                this.x = x;
+                this.y = canvas.height;
+                this.color = color;
+                this.angle = angleStart;
+                this.speed = speed;
+                this.maxSweep = 0.5; // Oscilación del ángulo
+                this.baseAngle = angleStart;
+            }
+
+            update() {
+                // Hacer oscilar los reflectores rítmicamente
+                this.angle = this.baseAngle + Math.sin(Date.now() * 0.001 * this.speed) * this.maxSweep;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.globalCompositeOperation = 'screen';
+                
+                // Configurar gradiente cónico/radial simulado
+                const length = Math.max(canvas.width, canvas.height) * 0.9;
+                const endX = this.x + Math.cos(this.angle) * length;
+                const endY = this.y - Math.sin(this.angle) * length;
+
+                const grad = ctx.createLinearGradient(this.x, this.y, endX, endY);
+                grad.addColorStop(0, this.color + '66'); // Con opacidad media en la base
+                grad.addColorStop(0.5, this.color + '22'); // Más difuso al medio
+                grad.addColorStop(1, 'rgba(0,0,0,0)'); // Desaparece al final
+
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                // Dibujar cono del reflector
+                const spread = 0.18; // Ancho del haz de luz
+                const leftX = this.x + Math.cos(this.angle - spread) * length;
+                const leftY = this.y - Math.sin(this.angle - spread) * length;
+                const rightX = this.x + Math.cos(this.angle + spread) * length;
+                const rightY = this.y - Math.sin(this.angle + spread) * length;
+
+                ctx.lineTo(leftX, leftY);
+                ctx.lineTo(rightX, rightY);
+                ctx.closePath();
+
+                ctx.fillStyle = grad;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        // Inicializar Elementos Animados
+        for (let i = 0; i < 60; i++) {
+            confetti.push(new ConfettiPiece());
+        }
+        for (let i = 0; i < 40; i++) {
+            sparkles.push(new SparklePiece());
+        }
+
+        // Reflectores Azul y Oro colocados en las esquinas inferiores y en el centro
+        spotlights.push(new Spotlight(0, '#0284c7', Math.PI/4, 1.2)); // Izquierda - Azul
+        spotlights.push(new Spotlight(50, '#FFC72C', Math.PI/3, 0.8)); // Izquierda - Oro
+        spotlights.push(new Spotlight(window.innerWidth * 0.6, '#0a4fb8', Math.PI*2/3, 1.1)); // Derecha - Azul
+        spotlights.push(new Spotlight(window.innerWidth * 0.65, '#FFC72C', Math.PI*3/4, 1.4)); // Derecha - Oro
+
+        // Bucle Principal de la Animación de Fiesta
+        function animateFiesta() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Ajustar posición X de reflectores según tamaño de pantalla dinámica
+            spotlights[0].x = 0;
+            spotlights[1].x = 40;
+            spotlights[2].x = canvas.width - 40;
+            spotlights[3].x = canvas.width;
+
+            // 1. Dibujar Reflectores (Luces)
+            spotlights.forEach(light => {
+                light.update();
+                light.draw();
+            });
+            
+            // Sparkles (burbujas brillantes flotando de abajo a arriba)
+            sparkles.forEach(sparkle => {
+                sparkle.update();
+                sparkle.draw();
+            });
+
+            // 2. Dibujar Papelitos (Confetti)
+            confetti.forEach(piece => {
+                piece.update();
+                piece.draw();
+            });
+
+            requestAnimationFrame(animateFiesta);
+        }
+
+        // --- 4. Cuenta regresiva al 15 de Agosto ---
+        function updateTimer() {
+            const eventDate = new Date("August 15, 2026 21:00:00").getTime();
+            const now = new Date().getTime();
+            let distance = eventDate - now;
+
+            if (distance < 0) {
+                // Mantener activo una simulación por defecto si ya pasó
+                distance = 32 * 24 * 60 * 60 * 1000; 
+            }
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = d < 10 ? '0' + d : d;
+            document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
+        }
+
+        // Inicialización tras carga de ventana
+        window.onload = function () {
+            setInterval(updateTimer, 1000);
+            updateTimer();
+            animateFiesta();
+        }
+    </script>
+</body>
+</html>
